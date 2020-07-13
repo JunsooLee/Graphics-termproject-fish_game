@@ -1,0 +1,132 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css">
+.canvas-wrap {
+	position: relative;
+	width: 512px;
+	height: 512px;
+	border: 1px solid #000;
+}
+
+canvas {
+	position: absolute;
+	border: 0;
+}
+
+button {
+	background-color: skyblue;
+	border: none;
+}
+
+</style>
+<script id="vertex-shader" type="x-shader/x-vertex">
+
+attribute  vec4 vPosition;
+attribute  vec4 vColor;
+attribute  vec2 vTexCoord;
+uniform mat4 mvm;
+varying vec4 fColor;
+varying vec2 fTexCoord;
+
+
+void main()
+{
+    fTexCoord = vTexCoord;
+    gl_Position = mvm*vPosition;
+}
+</script>
+
+<script id="fragment-shader" type="x-shader/x-fragment">
+
+precision mediump float;
+
+varying vec4 fColor;
+varying  vec2 fTexCoord;
+
+uniform sampler2D texture;
+
+void
+main()
+{
+    gl_FragColor = texture2D( texture, fTexCoord );
+}
+</script>
+
+<script type="text/javascript" src="../Common/webgl-utils.js"></script>
+<script type="text/javascript" src="../Common/initShaders.js"></script>
+<script type="text/javascript" src="../Common/MV.js"></script>
+<script type="text/javascript" src="test.js"></script>
+
+<script language="javascript">
+   function closetuto() {
+      document.getElementById("tutodiv").style.display = "none";
+      document.getElementById("canvas").style.display = "block";
+      document.getElementById("start").style.display = "block";
+      value = 11;
+   }
+</script>
+
+<script language="javascript">
+   var value = 0;
+   function next() {
+      if (value == 0) {
+         document.getElementById("tuto").src = 'file/2.png';
+         document.getElementById("alert").innerHTML = '2. 자신보다 작은 물고기를 먹으면 크기가 점점 증가합니다.';
+         value = 5;
+      } else if (value == 5) {
+         document.getElementById("tuto").src = 'file/3.gif';
+         document.getElementById("alert").innerHTML = '3. 자신보다 큰 물고기를 건드리면 생명이 감소하며 3번 부딫힐시 게임이 끝납니다.';
+         value = 10;
+      } else if (value == 10) {
+         document.getElementById("tutodiv").style.display = "none";
+         document.getElementById("canvas").style.display = "block";
+         document.getElementById("start").style.display = "block";
+         value = 11;
+      }
+   }
+</script>
+</head>
+<body bgcolor=skyblue>
+	<button id="X" style="display: none;">1</button>
+	<button id="Y" style="display: none;">2</button>
+	<button id="C" style="display: none;">1</button>
+	<button id="size" style="display: none;">50</button>
+	<div id="etc" style="display: none;">
+		<h1>Current Score :</h1>
+		<h2 id="score">0</h2>
+		<img src="heart.png" id="heart1" height="50" width="50"></img><img
+			src="heart.png" id="heart2" height="50" width="50"></img><img
+			src="heart.png" id="heart3" height="50" width="50"></img>
+	</div>
+	<div id="tutodiv">
+		<h3 id="alert">1. 키보드를 통하여 물고기를 움직입니다.</h3>
+		<img id="tuto" src="file/1.gif" width="700" height="400"></img>
+		<button id="close" onclick="closetuto()">
+			<img src="x.png" height="150" width="150"></img>
+		</button>
+		<button id="next" onclick="next()">
+			<img src="next.png" height="150" width="150"></img>
+		</button>
+		<br>
+		<h1></h1>
+	</div>
+	<embed id="bgsound" src="file/bgm.m3u" autostart=true hidden=true
+		loop=-1 height=50 width=400>
+	</embed>
+	<button id="start" style="display: none; padding-left: 100;">
+		<img src="start.png" height="150" width="150"></img>
+	</button>
+	<div class="canvas-wrap" id="canvas" style="display: none;">
+		<canvas id="gl-canvas" width="512" height="512">
+Oops ... your browser doesn't support the HTML5 canvas element
+      </canvas>
+		<canvas id="mine" width="512" height="512">
+      </canvas>
+	</div>
+	<img  id = "texImage" src = "fish1.png" hidden ></img>
+	<img id = "texImage1" src = "SA2011_black1.gif" hidden></img>
+
+</body>
+</html>
